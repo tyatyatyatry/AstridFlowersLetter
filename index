@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrid's Book of Flowers</title>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Vintage Book Cover Colors */
+            --cover-bg: #1e2b22; /* Dark vintage green */
+            --gold-foil: #c8a97e;
+            
+            /* Extremely Aged Paper Colors */
+            --paper-base: #d9c8b0;
+            --ink: #2a2015;
+            --faded-ink: #524032;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            margin: 0;
+            font-family: 'IM Fell English', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================================
+           PART 1: THE BOOK COVER INTRO
+           ========================================= */
+        .book-cover {
+            width: 100%;
+            height: 100vh;
+            background-color: var(--cover-bg);
+            /* Cloth book texture */
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                url('https://www.transparenttextures.com/patterns/woven-light.png');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+        }
+
+        .cover-border {
+            border: 4px solid var(--gold-foil);
+            outline: 1px solid var(--gold-foil);
+            outline-offset: 6px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .cover-border h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-foil);
+            font-size: 3rem;
+            margin: 0;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .cover-subtitle {
+            color: var(--gold-foil);
+            font-size: 1.5rem;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        .cover-illustration {
+            width: 180px;
+            margin: 2rem auto;
+            /* Give it a slightly faded gold/sepia look on the cover */
+            filter: sepia(0.8) hue-rotate(350deg) brightness(0.8) contrast(1.2);
+        }
+
+        .open-book-btn {
+            display: inline-block;
+            margin-top: 3rem;
+            padding: 10px 25px;
+            border: 1px solid var(--gold-foil);
+            color: var(--gold-foil);
+            text-decoration: none;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .open-book-btn:hover {
+            background: var(--gold-foil);
+            color: var(--cover-bg);
+        }
+
+        /* =========================================
+           PART 2: THE HEAVILY AGED PAPER
+           ========================================= */
+        .page-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 4rem 2rem;
+            box-sizing: border-box;
+            background: #0a0a0a;
+        }
+
+        .folio-page {
+            background-color: var(--paper-base);
+            /* EXTREME VINTAGE STAINING & TEXTURE */
+            background-image: 
+                /* Foxing (tiny brown mold/age spots) */
+                radial-gradient(circle at 15% 25%, rgba(92, 64, 51, 0.4) 1px, transparent 2px),
+                radial-gradient(circle at 85% 10%, rgba(92, 64, 51, 0.3) 1.5px, transparent 3px),
+                radial-gradient(circle at 45% 85%, rgba(92, 64, 51, 0.5) 1px, transparent 2px),
+                radial-gradient(circle at 70% 60%, rgba(92, 64, 51, 0.2) 2px, transparent 4px),
+                /* Large water stains & dark vignette edges */
+                radial-gradient(circle at 0% 0%, rgba(101, 67, 33, 0.6) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(74, 48, 24, 0.7) 0%, transparent 45%),
+                radial-gradient(circle at 50% 120%, rgba(80, 50, 30, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 10% 80%, rgba(139, 105, 65, 0.3) 0%, transparent 30%),
+                /* Base rough paper texture */
+                url('https://www.transparenttextures.com/patterns/old-wall.png');
+            
+            max-width: 800px;
+            width: 100%;
+            padding: 3rem 4rem;
+            /* Inner shadow creates the curve of a book spine on the left */
+            box-shadow: inset 40px 0 60px -20px rgba(0,0,0,0.4), 0 30px 60px rgba(0,0,0,0.8);
+            color: var(--ink);
+            position: relative;
+            box-sizing: border-box;
+            border-radius: 2px 8px 8px 2px; /* Slight curve on right edges */
+        }
+
+        /* Torn/Rough Page Edge Illusion on the right */
+        .folio-page::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            width: 5px;
+            background: linear-gradient(to right, transparent, rgba(0,0,0,0.1));
+            border-right: 1px dashed rgba(92, 64, 51, 0.3);
+        }
+
+        /* Typography */
+        .encyclopedia-header {
+            text-align: center;
+            border-bottom: 2px solid var(--faded-ink);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .encyclopedia-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--ink);
+            letter-spacing: 0.05em;
+        }
+
+        .encyclopedia-header p {
+            margin: 0;
+            font-style: italic;
+            color: var(--faded-ink);
+            font-size: 1rem;
+        }
+
+        .letter-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .letter-content p {
+            margin-bottom: 1.2rem;
+            text-indent: 2rem;
+        }
+
+        .letter-content p:first-of-type {
+            text-indent: 0;
+        }
+
+        /* Extreme Vintage Drop Cap */
+        .drop-cap::first-letter {
+            float: left;
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            line-height: 0.7;
+            padding-top: 10px;
+            padding-right: 10px;
+            padding-left: 0;
+            color: var(--ink);
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.3);
+        }
+
+        /* Botanical Illustrations formatting */
+        .botanical-illustration {
+            float: right;
+            margin: 0 0 1rem 2rem;
+            max-width: 260px;
+            /* Multiply merges the watercolor into the dark stains perfectly */
+            mix-blend-mode: multiply; 
+            /* Heavy aging filter on the image itself */
+            filter: sepia(0.5) contrast(1.2) brightness(0.85) saturate(0.8);
+            z-index: 1;
+        }
+
+        .botanical-bottom-left {
+            float: left;
+            margin: 1rem 2rem 1rem -2rem;
+            max-width: 220px;
+            mix-blend-mode: multiply;
+            filter: sepia(0.6) contrast(1.2) brightness(0.8) saturate(0.7);
+            transform: rotate(-5deg);
+        }
+
+        /* Custom Vintage Divider */
+        .divider {
+            text-align: center;
+            margin: 2.5rem 0;
+        }
+        .divider img {
+            width: 100px;
+            opacity: 0.6;
+            mix-blend-mode: multiply;
+            filter: sepia(1);
+        }
+
+        .signature-block {
+            margin-top: 4rem;
+            text-align: right;
+            padding-right: 2rem;
+        }
+
+        .signature-name {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 4rem;
+            margin: -1rem 0 1rem 0;
+            color: #110d0a;
+            transform: rotate(-3deg); /* Makes it look hand-signed */
+        }
+
+        .postscript {
+            margin-top: 3rem;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--faded-ink);
+            border-top: 1px solid rgba(82, 64, 50, 0.3);
+            padding-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .cover-border { padding: 1.5rem; }
+            .cover-border h1 { font-size: 2rem; }
+            .folio-page { padding: 2rem 1.5rem; box-shadow: inset 15px 0 30px -10px rgba(0,0,0,0.3); }
+            .botanical-illustration, .botanical-bottom-left { float: none; display: block; margin: 1.5rem auto; max-width: 80%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-cover">
+        <div class="cover-border">
+            <h1>Astrid's Book</h1>
+            <div class="cover-subtitle">of</div>
+            <h1>Flowers from Friends</h1>
+            
+            <img src="YOUR_WATERCOLOR_IMAGE.jpg" alt="Cover Flower" class="cover-illustration">
+            
+            <br>
+            <a href="#the-letter" class="open-book-btn">Buka Surat</a>
+        </div>
+    </div>
+
+    <div class="page-container" id="the-letter">
+        <div class="folio-page">
+
+            <div class="encyclopedia-header">
+                <h2>A S T R I D</h2>
+                <p>Volume I. — Collected Memories & Botanical Notes</p>
+            </div>
+
+            <div class="letter-content">
+                
+                <img src="YOUR_WATERCOLOR_IMAGE.jpg" alt="Botanical Watercolor" class="botanical-illustration">
+
+                <p class="drop-cap">Tau nggak, padahal niatnya aku buat ini cuma untuk ucapan Selamat Ulang Tahun aja, tapi nggak nyangka, ternyata laman ini untuk say goodbye juga? wkwk.</p>
+
+                <p>(Sebel nggak gue nulis kek gini? pasti kamu sebel ya. Tapi bodo amat deh, kan aku memang orangnya <em>Words of Affirmation</em> xixixixi)</p>
+
+                <p>Aku masih inget pertama kali sebelum aku masuk DEKS, yang pertama kali nyapa aku duluan itu kamu mba wkwk (bukti foto terlampir). Randomly ngechat. Pas kamu minta maaf karena katanya KEDSOS berisik, jujur aku malah hepi banget. Karena ternyata orang orangnya nggak se-kaku yang aku kira di KP. Dan ternyata bener aja, selama aku satu tahun lebih, dengan banyak banget kepusingan, ke-halu-an, dan dar der dor kanan kiri yang diterima oleh KEDSOS, ternyata kita masih bisa berisik aja tuh. Malah makin kesini makin tawa-tiwi. Terima kasih ya, kehadiran mbak Astrid itu 50% ketawanya KEDSOS, tahu.</p>
+
+                <p>(Jadi mungkin kepergianku yang mendadak ini juga cuma batu kerikil kecil dalam perjalanan KEDSOS ya. Amiin.)</p>
+
+                <div class="divider">
+                    ❦ ~ ❧
+                </div>
+
+                <img src="YOUR_SECOND_WATERCOLOR_IMAGE.jpg" alt="Botanical Detail" class="botanical-bottom-left">
+
+                <p>Dan harus aku akui, salah satu peran yang buat KEDSOS survive itu bukan cuma karena <em>vibes</em>(?) kamu, tapi juga karena kompetensi kamu, Mbak Acid. Kamu bahkan mengajarkan aku banyak soal flow pengadaan, hubungan sama vendor, dan detil-detil soal birokrasi BI yang aku pun nggak tahu. <em>And from that, I'm forever grateful.</em> (Bisa jadi nanti aku masih chat kamu buat nanya2, hehe).</p>
+
+                <p>Namun lebih dari kompetensi, aku percaya keberlangsungan KEDSOS sampai saat ini juga berkat rasa tanggung jawab kamu. Karena kamu peduli sama ISEF, sama DEKS, dan sama Mbak Mega (dan KEDSOS juga, in extent).</p>
+
+                <p>Jadi, terima kasih ya.</p>
+
+                <p>Oiya, aku berharap kamu juga bener-bener di terima beasiswa ya. Udah cukup waktumu mengabdi pada BI mba. Sekarang waktunya dirimu mengabdi pada mimpimu sendiri. Semoga kamu bisa makin hepi dan berbunga, tetap merekah dengan tawamu yang nularin kita semua juga ikut bahagia. Semoga otakmu makin tajam, dompetmu makin tajir, makeup mu nggada yang luntur, selalu ada Waktu supaya bisa healing tipis2, dan bunga-bunga di kebunmu makin mekar. Dan, semoga kisah (cinta)mu di sana mirip drakor-drakor yang so sweet dan <em>happy ending</em>. Pokoknya kita gaboleh jadi <em>second lead</em> di cerita kita sendiri!</p>
+
+                <p>Hmm... nulis apa lagi ya yang bisa bikin kamu mewek?</p>
+
+                <p>wkwk pokoknya punten sekali atas semua bantuan, kerjasama, dan persahabatan yang selama ini ada diantara kita. nuhun pisan kalau selama ini aku banyak salah-salah. Jangan lupakan aku ya. lupakan kesalahanku aja.</p>
+
+            </div>
+
+            <div class="signature-block">
+                <div><em>Love with flowers,</em></div>
+                <div class="signature-name">Tya</div>
+            </div>
+
+            <div class="postscript">
+                P.S: Coba tebak, ilustrasi bunga ini maknanya apa coba.
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
