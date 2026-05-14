@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astrid's Book of Flowers from Friends</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+:root {
+  --cv-bg:    #0e1810;
+  --cv-mid:   #162118;
+  --gold:     #b88c2c;
+  --gold-hi:  #d4b05a;
+  --gold-lo:  #7a5c0e;
+  --paper:    #c0a06a;    /* very aged, almost leather-brown */
+  --ink:      #0c0a06;
+  --ink-fd:   #3e2c14;
+  --ink-gh:   #6a5030;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:#050705;
+  font-family:'IM Fell English', serif;
+  overflow-x:hidden;
+}
+
+/* ============================================================
+   COVER
+   ============================================================ */
+#cover-overlay {
+  position:fixed; inset:0; z-index:900;
+  perspective:3200px;
+}
+#cover-page {
+  width:100%; height:100%;
+  transform-origin:left center;
+  transform:rotateY(0deg);
+  transition:transform 2.1s cubic-bezier(0.77,0,0.175,1);
+  transform-style:preserve-3d;
+}
+#cover-page.flipped { transform:rotateY(-180deg); }
+
+.cover-front {
+  position:absolute; inset:0;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  background-color:var(--cv-bg);
+  background-image:
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.014) 0px, rgba(255,255,255,0.014) 1px,
+      transparent 1px, transparent 4px),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.009) 0px, rgba(255,255,255,0.009) 1px,
+      transparent 1px, transparent 4px),
+    repeating-linear-gradient(45deg,
+      rgba(255,255,255,0.004) 0px, rgba(255,255,255,0.004) 1px,
+      transparent 1px, transparent 10px),
+    radial-gradient(ellipse at 36% 42%, rgba(35,62,33,0.50) 0%, transparent 52%),
+    radial-gradient(ellipse at 64% 58%, rgba(6,12,7,0.82)  0%, transparent 52%),
+    radial-gradient(ellipse at 50% 50%, var(--cv-mid) 0%, var(--cv-bg) 100%);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:
+    inset -50px 0 120px rgba(0,0,0,0.94),
+    inset  25px 0  55px rgba(0,0,0,0.20),
+    inset   0   0 160px rgba(0,0,0,0.50);
+}
+.cover-back {
+  position:absolute; inset:0;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  transform:rotateY(180deg);
+  background:#080d08;
+  background-image:radial-gradient(ellipse at center,#122014 0%,#040604 100%);
+}
+
+/* Triple border */
+.fa { border:3px double var(--gold-lo); padding:5px; max-width:min(598px,88vw); width:100%; }
+.fb { border:1px solid var(--gold);    padding:4px; }
+.fc {
+  border:1px solid var(--gold-lo);
+  padding:2.8rem 2.2rem 2.2rem;
+  text-align:center; position:relative;
+  background:rgba(0,0,0,0.22);
+}
+.corner { position:absolute; color:var(--gold); font-size:.9rem; opacity:.78; }
+.c-tl{top:8px; left:8px;} .c-tr{top:8px; right:8px;}
+.c-bl{bottom:8px; left:8px;} .c-br{bottom:8px; right:8px;}
+
+.cv-series {
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.7rem;
+  color:var(--gold-lo); letter-spacing:.46em; text-transform:uppercase;
+  margin-bottom:1.5rem;
+}
+.cv-t1 {
+  font-family:'Playfair Display',serif; font-weight:700;
+  font-size:clamp(1.8rem,5vw,3.2rem); color:var(--gold);
+  letter-spacing:.12em; text-transform:uppercase; line-height:1.05;
+  text-shadow:0 0 60px rgba(184,140,44,.42), 2px 2px 0 rgba(0,0,0,.78);
+}
+.cv-of {
+  font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300;
+  font-size:clamp(1rem,2.5vw,1.5rem); color:var(--gold-hi); opacity:.68;
+  margin:.32rem 0;
+}
+.cv-t2 {
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:clamp(1.1rem,2.8vw,2rem); color:var(--gold);
+  text-shadow:0 0 40px rgba(184,140,44,.28);
+}
+.cv-rule {
+  display:flex; align-items:center; gap:12px;
+  margin:1.3rem 0; color:var(--gold-lo); opacity:.6;
+}
+.cv-rule::before,.cv-rule::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(to right,transparent,var(--gold-lo),transparent);
+}
+.cv-img { width:170px; height:170px; margin:0 auto 1.3rem; }
+.cv-img img {
+  width:100%; height:100%; object-fit:contain; display:block;
+  filter:sepia(.82) hue-rotate(336deg) brightness(.64) contrast(1.25) saturate(.68);
+  mix-blend-mode:luminosity;
+}
+.cv-slot {
+  width:100%; height:100%;
+  border:1px dashed rgba(184,140,44,.25);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--gold-lo); font-size:.6rem; letter-spacing:.12em;
+  font-style:italic; opacity:.40;
+}
+.cv-dedi { font-style:italic; font-size:.8rem; color:var(--gold-lo); letter-spacing:.2em; margin-top:1.1rem; }
+.open-btn {
+  display:inline-block; margin-top:1.6rem;
+  padding:8px 26px; border:1px solid var(--gold);
+  color:var(--gold); background:transparent; cursor:pointer;
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1.05rem; letter-spacing:.25em; text-transform:uppercase;
+  transition:background .4s,box-shadow .4s;
+}
+.open-btn:hover { background:rgba(184,140,44,.09); box-shadow:0 0 30px rgba(184,140,44,.2); }
+
+/* ============================================================
+   LETTER SECTION
+   ============================================================ */
+#letter-section {
+  min-height:100vh; background:#050705;
+  display:flex; justify-content:center;
+  padding:6rem 1.5rem 9rem;
+}
+
+/* Wrapper — drop-shadow follows the torn mask shape */
+.folio-wrapper {
+  max-width:870px; width:100%;
+  filter:
+    drop-shadow(0 60px 120px rgba(0,0,0,1))
+    drop-shadow(0  8px  28px rgba(0,0,0,.90));
+}
+
+/* ─── The page ─────────────────────────────────── */
+.folio-page {
+  position:relative;
+  background-color:var(--paper);
+  background-image:
+    /* ── SVG fine grain (high-freq turbulence) ── */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='fg'><feTurbulence type='fractalNoise' baseFrequency='0.88 0.76' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='280' height='280' filter='url(%23fg)' opacity='0.13'/></svg>"),
+    /* ── SVG long paper-fiber grain (low-X freq) ── */
+    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='ff'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='420' height='420' filter='url(%23ff)' opacity='0.07'/></svg>"),
+    /* ── 18 foxing / mold spots ── */
+    radial-gradient(circle at  8% 12%, rgba(80,48,26,.60) 2px,   transparent 4px),
+    radial-gradient(circle at 88%  7%, rgba(80,48,26,.42) 2.5px, transparent 5px),
+    radial-gradient(circle at 42% 91%, rgba(80,48,26,.65) 1.5px, transparent 3px),
+    radial-gradient(circle at 75% 64%, rgba(80,48,26,.35) 3px,   transparent 6px),
+    radial-gradient(circle at 25% 55%, rgba(80,48,26,.28) 1.5px, transparent 3px),
+    radial-gradient(circle at 96% 44%, rgba(80,48,26,.50) 2px,   transparent 4px),
+    radial-gradient(circle at  3% 72%, rgba(80,48,26,.55) 1.5px, transparent 3px),
+    radial-gradient(circle at 64% 28%, rgba(80,48,26,.26) 2.5px, transparent 5px),
+    radial-gradient(circle at 55% 11%, rgba(80,48,26,.40) 1px,   transparent 2px),
+    radial-gradient(circle at 19% 95%, rgba(80,48,26,.32) 2px,   transparent 4px),
+    radial-gradient(circle at 81% 80%, rgba(80,48,26,.46) 1.5px, transparent 3px),
+    radial-gradient(circle at 33% 40%, rgba(80,48,26,.20) 3px,   transparent 6px),
+    radial-gradient(circle at  6% 48%, rgba(80,48,26,.42) 1px,   transparent 2px),
+    radial-gradient(circle at 92% 24%, rgba(80,48,26,.30) 2px,   transparent 4px),
+    radial-gradient(circle at 47% 68%, rgba(80,48,26,.22) 1.5px, transparent 3px),
+    radial-gradient(circle at 73% 89%, rgba(80,48,26,.36) 2px,   transparent 4px),
+    radial-gradient(circle at 15% 33%, rgba(80,48,26,.24) 1px,   transparent 2px),
+    radial-gradient(circle at 60% 52%, rgba(80,48,26,.18) 2.5px, transparent 5px),
+    /* ── water stain rings (concentric halos) ── */
+    radial-gradient(ellipse at   2%   3%, rgba(95,58,22,.68) 0%, rgba(95,58,22,.22) 14%, transparent 24%),
+    radial-gradient(ellipse at  98%  97%, rgba(55,28,8,.72)  0%, rgba(55,28,8,.18)  16%, transparent 28%),
+    radial-gradient(ellipse at  84%  13%, rgba(130,90,42,.28) 0%, transparent 20%),
+    radial-gradient(ellipse at  16%  87%, rgba(95,58,22,.34)  0%, transparent 24%),
+    radial-gradient(ellipse at  50%   0%, rgba(75,44,18,.42)  0%, transparent 17%),
+    radial-gradient(ellipse at  28%  22%, rgba(95,58,22,.16)  0%, transparent 16%),
+    radial-gradient(ellipse at  72%  76%, rgba(75,44,18,.20)  0%, transparent 14%),
+    /* ── corner scorch/burn ── */
+    radial-gradient(ellipse at   0%   0%, rgba(22,10,3,.75) 0%, transparent 22%),
+    radial-gradient(ellipse at 100%   0%, rgba(22,10,3,.68) 0%, transparent 20%),
+    radial-gradient(ellipse at   0% 100%, rgba(22,10,3,.70) 0%, transparent 20%),
+    radial-gradient(ellipse at 100% 100%, rgba(22,10,3,.80) 0%, transparent 24%),
+    /* ── general edge darkening ── */
+    radial-gradient(ellipse at 50% 50%, rgba(200,168,115,.15) 0%, rgba(110,78,36,.48) 100%);
+
+  background-size:
+    280px 280px, 420px 420px,
+    auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,
+    auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,
+    auto,auto,auto,auto,auto,auto,auto,auto,auto,auto;
+
+  padding:4.5rem 5.5rem;
+  /* clip-path / mask applied by JS */
+}
+
+/* Spine vignette */
+.folio-page::before {
+  content:''; position:absolute;
+  top:0; left:0; bottom:0; width:110px;
+  background:linear-gradient(to right,
+    rgba(0,0,0,.42) 0%,
+    rgba(0,0,0,.10) 55%,
+    transparent 100%);
+  pointer-events:none;
+}
+
+/* ── Page header ──────────────────────────────── */
+.page-header {
+  text-align:center;
+  margin-bottom:3rem; padding-bottom:1.8rem;
+  position:relative;
+}
+.page-header::after {
+  content:''; position:absolute;
+  bottom:0; left:5%; right:5%;
+  border-top:3px double var(--ink-fd);
+  border-bottom:1px solid var(--ink-fd);
+  height:5px;
+}
+.page-vol {
+  font-size:.7rem; letter-spacing:.44em;
+  text-transform:uppercase; color:var(--ink-gh);
+  margin-bottom:.9rem;
+}
+.page-header h2 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,5vw,3rem); font-weight:700;
+  letter-spacing:.5em; color:var(--ink);
+}
+.page-subtitle {
+  font-style:italic; font-size:.88rem;
+  color:var(--ink-fd); margin-top:.7rem; letter-spacing:.05em;
+}
+
+/* ── Letter body ──────────────────────────────── */
+.letter-body {
+  font-size:1.14rem; line-height:1.84;
+  color:var(--ink); text-align:justify;
+}
+.letter-body p { margin-bottom:1.3rem; text-indent:2.5rem; }
+.letter-body p:first-of-type { text-indent:0; }
+
+.drop-cap::first-letter {
+  float:left;
+  font-family:'Playfair Display',serif;
+  font-size:6rem; line-height:.72;
+  padding-top:6px; padding-right:14px;
+  color:var(--ink);
+}
+
+/* ============================================================
+   BOTANICAL PLATES
+   ============================================================
+   IMAGE SLOT GUIDE
+   ─────────────────────────────────────────────────────────────
+   Slot 1 · images/cover-flower.jpg  →  book cover
+   Slot 2 · images/plate-1.jpg       →  Plate I   (right float)
+   Slot 3 · images/plate-2.jpg       →  Plate II  (left float)
+   Slot 4 · images/plate-3.jpg       →  Plate III (centred, hero)
+   Slot 5 · images/plate-4.jpg       →  Plate IV  (right float)
+
+   To customise captions edit .plate-latin / .plate-common /
+   .plate-meaning inside each plate block below.
+   ============================================================ */
+
+.plate { display:flex; flex-direction:column; align-items:center; }
+
+.plate-right {
+  float:right; clear:right;
+  margin:.3rem 0 2rem 3rem;
+  width:clamp(200px,36%,285px);
+}
+.plate-left {
+  float:left; clear:left;
+  margin:.3rem 3rem 2rem 0;
+  width:clamp(185px,33%,265px);
+}
+.plate-center {
+  clear:both;
+  width:clamp(280px,62%,480px);
+  margin:2.5rem auto;
+}
+
+/* Frame */
+.plate-frame {
+  width:100%; position:relative;
+  border:1.5px solid var(--ink-fd);
+  padding:7px;
+  background:rgba(0,0,0,.06);
+  box-shadow:inset 0 0 10px rgba(0,0,0,.16), 1px 1px 0 rgba(255,255,255,.08);
+}
+.plate-frame::before {
+  content:''; position:absolute; inset:4px;
+  border:1px solid rgba(62,44,20,.26);
+  pointer-events:none;
+}
+.plate-frame img {
+  width:100%; display:block;
+  mix-blend-mode:multiply;
+  filter:sepia(.35) contrast(1.22) brightness(.85) saturate(.78);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 52%,rgba(0,0,0,.50) 100%);
+  mask-image:radial-gradient(ellipse at 50% 50%,#000 52%,rgba(0,0,0,.50) 100%);
+}
+
+/* Placeholder */
+.plate-slot {
+  width:100%; aspect-ratio:3/4;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:6px;
+  color:var(--ink-gh); font-size:.62rem;
+  letter-spacing:.12em; font-style:italic; opacity:.44;
+}
+
+/* Caption */
+.plate-caption {
+  width:100%;
+  border:1.5px solid var(--ink-fd); border-top:none;
+  padding:5px 8px 7px;
+  background:rgba(0,0,0,.04); text-align:center;
+}
+.plate-num {
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:.6rem; letter-spacing:.42em;
+  text-transform:uppercase; color:var(--ink-fd); margin-bottom:2px;
+}
+.plate-latin {
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:.92rem;
+  color:var(--ink); line-height:1.25;
+}
+.plate-common {
+  display:block; font-size:.7rem;
+  color:var(--ink-fd); letter-spacing:.08em; margin-top:1px;
+}
+.plate-meaning {
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:.75rem;
+  color:var(--ink-gh); margin-top:3px;
+}
+
+/* ── Divider ──────────────────────────────────── */
+.divider {
+  clear:both; margin:2.2rem 0;
+  display:flex; align-items:center; gap:14px;
+  color:var(--ink-fd); opacity:.48;
+}
+.divider::before,.divider::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(to right,transparent,var(--ink-fd),transparent);
+}
+.divider span { font-size:1rem; letter-spacing:.5rem; white-space:nowrap; }
+
+/* ── Signature ────────────────────────────────── */
+.signature-block { clear:both; margin-top:3.5rem; text-align:right; padding-right:4rem; }
+.sig-closing { font-style:italic; font-size:1.1rem; color:var(--ink-fd); }
+.sig-name {
+  font-family:'Pinyon Script',cursive;
+  font-size:5rem; color:var(--ink); line-height:1;
+  display:inline-block; transform:rotate(-3deg); margin-top:.2rem;
+}
+
+/* ── P.S. ─────────────────────────────────────── */
+.postscript {
+  clear:both; margin-top:3rem;
+  padding-top:1.4rem;
+  border-top:1px solid rgba(62,44,20,.22);
+  font-style:italic; font-size:.97rem; color:var(--ink-fd);
+}
+.page-number {
+  text-align:center; margin-top:3rem;
+  font-size:.77rem; letter-spacing:.35em;
+  color:var(--ink-gh); opacity:.55;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:680px){
+  .folio-page { padding:2.5rem 1.6rem 3rem; }
+  .plate-right,.plate-left { float:none; width:72%; margin:2rem auto; }
+  .plate-center { width:88%; }
+  .fc { padding:1.8rem 1.2rem; }
+  .sig-name { font-size:3.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BOOK COVER
+     ============================================================ -->
+<div id="cover-overlay">
+<div id="cover-page">
+
+  <div class="cover-front">
+    <div class="fa"><div class="fb"><div class="fc">
+      <span class="corner c-tl">✦</span><span class="corner c-tr">✦</span>
+      <span class="corner c-bl">✦</span><span class="corner c-br">✦</span>
+
+      <div class="cv-series">Botanical Records of Memory &amp; Affection</div>
+      <div class="cv-t1">Astrid's Book</div>
+      <div class="cv-of">of</div>
+      <div class="cv-t2">Flowers from Friends</div>
+      <div class="cv-rule">❧ ✦ ❦</div>
+
+      <!--
+      ╔══════════════════════════════════════╗
+      ║ SLOT 1 · images/cover-flower.jpg     ║
+      ╚══════════════════════════════════════╝
+      -->
+      <div class="cv-img">
+        <img src="images/cover-flower.jpg" alt="Cover botanical"
+          onerror="this.outerHTML='<div class=\'cv-slot\'>[cover-flower.jpg]</div>'">
+      </div>
+
+      <div class="cv-dedi">— For Astrid, with love —</div>
+      <button class="open-btn" onclick="openBook()">❧ Buka Surat ❦</button>
+    </div></div></div>
+  </div>
+
+  <div class="cover-back"></div>
+</div>
+</div>
+
+
+<!-- ============================================================
+     LETTER PAGE
+     ============================================================ -->
+<div id="letter-section">
+<div class="folio-wrapper">
+<div class="folio-page" id="folio">
+
+  <div class="page-header">
+    <div class="page-vol">Vol. I — Collected Memories &amp; Botanical Records</div>
+    <h2>A S T R I D</h2>
+    <div class="page-subtitle"><em>Kepada yang tersayang, dengan bunga-bunga dari teman</em></div>
+  </div>
+
+  <div class="letter-body">
+
+    <!--
+    ╔════════════════════════════════════════════╗
+    ║ PLATE I · images/plate-1.jpg               ║
+    ║ Floats RIGHT · beside opening paragraphs   ║
+    ╚════════════════════════════════════════════╝
+    Edit plate-latin / plate-common / plate-meaning below.
+    -->
+    <div class="plate plate-right">
+      <div class="plate-frame">
+        <img src="images/plate-1.jpg" alt="Botanical Plate I"
+          onerror="this.outerHTML='<div class=\'plate-slot\'>[plate-1.jpg]</div>'">
+      </div>
+      <div class="plate-caption">
+        <span class="plate-num">Plate I.</span>
+        <span class="plate-latin">— nama bunga (Latin) —</span>
+        <span class="plate-common">Common Name</span>
+        <span class="plate-meaning">"meaning of this flower"</span>
+      </div>
+    </div>
+
+    <p class="drop-cap">Tau nggak, padahal niatnya aku buat ini cuma untuk ucapan Selamat Ulang Tahun aja, tapi nggak nyangka, ternyata laman ini untuk <em>say goodbye</em> juga? wkwk.</p>
+
+    <p>(Sebel nggak gue nulis kek gini? pasti kamu sebel ya. Tapi bodo amat deh, kan aku memang orangnya <em>Words of Affirmation</em> xixixixi)</p>
+
+    <p>Aku masih inget pertama kali sebelum aku masuk DEKS, yang pertama kali nyapa aku duluan itu kamu mba wkwk (bukti foto terlampir). Randomly ngechat. Pas kamu minta maaf karena katanya KEDSOS berisik, jujur aku malah hepi banget. Karena ternyata orang orangnya nggak se-kaku yang aku kira di KP.</p>
+
+    <p>Dan ternyata bener aja, selama aku satu tahun lebih, dengan banyak banget kepusingan, ke-halu-an, dan dar der dor kanan kiri yang diterima oleh KEDSOS, ternyata kita masih bisa berisik aja tuh. Malah makin kesini makin tawa-tiwi. Terima kasih ya, kehadiran mbak Astrid itu 50% ketawanya KEDSOS, tahu.</p>
+
+    <p>(Jadi mungkin kepergianku yang mendadak ini juga cuma batu kerikil kecil dalam perjalanan KEDSOS ya. Amiin.)</p>
+
+    <div class="divider"><span>❦ &nbsp; ✦ &nbsp; ❧</span></div>
+
+    <!--
+    ╔════════════════════════════════════════════╗
+    ║ PLATE II · images/plate-2.jpg              ║
+    ║ Floats LEFT · mid-letter                   ║
+    ╚════════════════════════════════════════════╝
+    -->
+    <div class="plate plate-left">
+      <div class="plate-frame">
+        <img src="images/plate-2.jpg" alt="Botanical Plate II"
+          onerror="this.outerHTML='<div class=\'plate-slot\'>[plate-2.jpg]</div>'">
+      </div>
+      <div class="plate-caption">
+        <span class="plate-num">Plate II.</span>
+        <span class="plate-latin">— nama bunga (Latin) —</span>
+        <span class="plate-common">Common Name</span>
+        <span class="plate-meaning">"meaning of this flower"</span>
+      </div>
+    </div>
+
+    <p>Dan harus aku akui, salah satu peran yang buat KEDSOS survive itu bukan cuma karena <em>vibes</em>(?) kamu, tapi juga karena kompetensi kamu, Mbak Acid. Kamu bahkan mengajarkan aku banyak soal flow pengadaan, hubungan sama vendor, dan detil-detil soal birokrasi BI yang aku pun nggak tahu. <em>And from that, I'm forever grateful.</em> (Bisa jadi nanti aku masih chat kamu buat nanya2, hehe).</p>
+
+    <p>Namun lebih dari kompetensi, aku percaya keberlangsungan KEDSOS sampai saat ini juga berkat rasa tanggung jawab kamu. Karena kamu peduli sama ISEF, sama DEKS, dan sama Mbak Mega (dan KEDSOS juga, in extent).</p>
+
+    <p>Jadi, terima kasih ya.</p>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!--
+    ╔════════════════════════════════════════════╗
+    ║ PLATE III · images/plate-3.jpg             ║
+    ║ Centred — the "hero" illustration          ║
+    ╚════════════════════════════════════════════╝
+    -->
+    <div class="plate plate-center">
+      <div class="plate-frame">
+        <img src="images/plate-3.jpg" alt="Botanical Plate III"
+          onerror="this.outerHTML='<div class=\'plate-slot\' style=\'aspect-ratio:4/3\'>[plate-3.jpg]</div>'">
+      </div>
+      <div class="plate-caption">
+        <span class="plate-num">Plate III.</span>
+        <span class="plate-latin">— nama bunga (Latin) —</span>
+        <span class="plate-common">Common Name</span>
+        <span class="plate-meaning">"meaning of this flower"</span>
+      </div>
+    </div>
+
+    <p>Oiya, aku berharap kamu juga bener-bener di terima beasiswa ya. Udah cukup waktumu mengabdi pada BI mba. Sekarang waktunya dirimu mengabdi pada mimpimu sendiri. Semoga kamu bisa makin hepi dan berbunga, tetap merekah dengan tawamu yang nularin kita semua juga ikut bahagia.</p>
+
+    <!--
+    ╔════════════════════════════════════════════╗
+    ║ PLATE IV · images/plate-4.jpg              ║
+    ║ Floats RIGHT near the closing              ║
+    ║ Remove this block if you only have 3 imgs  ║
+    ╚════════════════════════════════════════════╝
+    -->
+    <div class="plate plate-right">
+      <div class="plate-frame">
+        <img src="images/plate-4.jpg" alt="Botanical Plate IV"
+          onerror="this.outerHTML='<div class=\'plate-slot\'>[plate-4.jpg]</div>'">
+      </div>
+      <div class="plate-caption">
+        <span class="plate-num">Plate IV.</span>
+        <span class="plate-latin">— nama bunga (Latin) —</span>
+        <span class="plate-common">Common Name</span>
+        <span class="plate-meaning">"meaning of this flower"</span>
+      </div>
+    </div>
+
+    <p>Semoga otakmu makin tajam, dompetmu makin tajir, makeup mu nggada yang luntur, selalu ada waktu supaya bisa <em>healing</em> tipis-tipis, dan bunga-bunga di kebunmu makin mekar. Dan, semoga kisah (cinta)mu di sana mirip drakor-drakor yang so sweet dan <em>happy ending</em>. Pokoknya kita gaboleh jadi <em>second lead</em> di cerita kita sendiri!</p>
+
+    <p>Hmm... nulis apa lagi ya yang bisa bikin kamu mewek?</p>
+
+    <p>wkwk pokoknya punten sekali atas semua bantuan, kerjasama, dan persahabatan yang selama ini ada diantara kita. nuhun pisan kalau selama ini aku banyak salah-salah. Jangan lupakan aku ya. lupakan kesalahanku aja.</p>
+
+  </div><!-- /letter-body -->
+
+  <div class="signature-block">
+    <div class="sig-closing"><em>Love with flowers,</em></div>
+    <div class="sig-name">Tya</div>
+  </div>
+
+  <div class="postscript">
+    <em>P.S:</em> Coba tebak, ilustrasi bunga ini maknanya apa coba.
+  </div>
+
+  <div class="page-number">— i —</div>
+
+</div><!-- /folio-page -->
+</div><!-- /folio-wrapper -->
+</div><!-- /letter-section -->
+
+
+<script>
+/* ============================================================
+   COVER FLIP
+   ============================================================ */
+function openBook() {
+  var page    = document.getElementById('cover-page');
+  var overlay = document.getElementById('cover-overlay');
+  page.classList.add('flipped');
+  setTimeout(function() {
+    overlay.style.transition    = 'opacity 0.4s ease';
+    overlay.style.opacity       = '0';
+    overlay.style.pointerEvents = 'none';
+  }, 1920);
+  setTimeout(function() { overlay.style.display = 'none'; }, 2380);
+}
+
+/* ============================================================
+   TORN PAPER MASK — canvas + fractal noise
+   ─────────────────────────────────────────────────────────────
+   Uses multi-octave smooth (value) noise to generate an organic
+   torn edge on all 4 sides. Each page load gets a unique tear.
+   The resulting canvas is applied as mask-image so the parent's
+   drop-shadow follows the torn silhouette exactly.
+   ============================================================ */
+
+var TORN_SEED = Math.random() * 999;
+
+/* Simple value noise hash */
+function vhash(n) {
+  var x = Math.sin(n * 127.1 + TORN_SEED * 31.41) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+/* Smoothstep-interpolated 1-D noise */
+function vnoise(t, sid) {
+  var i = Math.floor(t);
+  var f = t - i;
+  f = f * f * (3 - 2 * f);   /* smoothstep easing */
+  return vhash(i + sid * 7) * (1 - f) + vhash(i + 1 + sid * 7) * f;
+}
+
+/* Fractal noise — sum of octaves */
+function fnoise(t, octs, sid) {
+  var v = 0, a = 1, freq = 1, tot = 0;
+  for (var o = 0; o < octs; o++) {
+    v   += vnoise(t * freq, sid + o * 17) * a;
+    tot += a;
+    a   *= 0.50;
+    freq*= 2.13;
+  }
+  return v / tot;
+}
+
+/* Sample noise, bias toward larger tears occasionally */
+function tearN(t, sid, amp) {
+  var base  = fnoise(t * 10, 5, sid);
+  var coarse= fnoise(t *  3, 3, sid + 50);
+  /* rare deep snag */
+  var spike = (fnoise(t * 28, 2, sid + 100) > 0.82)
+    ? fnoise(t * 28, 2, sid + 100) * 0.6
+    : 0;
+  return (base * 0.55 + coarse * 0.35 + spike * 0.10) * amp;
+}
+
+function buildTornMask() {
+  var folio = document.getElementById('folio');
+  var W = folio.offsetWidth;
+  var H = folio.offsetHeight;
+  if (!W || !H) return;
+
+  var canvas = document.createElement('canvas');
+  canvas.width  = W;
+  canvas.height = H;
+  var ctx = canvas.getContext('2d');
+
+  /*  Amplitudes in px — tune these for more/less drama  */
+  var topAmp    = 13;   /* top edge */
+  var rightAmp  = 24;   /* right — the cut page edge, most dramatic */
+  var bottomAmp = 14;   /* bottom */
+  var leftAmp   = 8;    /* left  — all 4 torn as requested */
+
+  var STEPS = 320;
+
+  ctx.beginPath();
+
+  /* ── Top: left → right ── */
+  ctx.moveTo(
+    tearN(0, 80, leftAmp),
+    tearN(0, 90, topAmp)
+  );
+  for (var i = 1; i <= STEPS; i++) {
+    var t = i / STEPS;
+    ctx.lineTo(t * W, tearN(t, 1, topAmp));
+  }
+
+  /* ── Right: top → bottom ── */
+  for (var i = 1; i <= STEPS; i++) {
+    var t = i / STEPS;
+    ctx.lineTo(W - tearN(t, 2, rightAmp), t * H);
+  }
+
+  /* ── Bottom: right → left ── */
+  for (var i = STEPS; i >= 0; i--) {
+    var t = i / STEPS;
+    ctx.lineTo(t * W, H - tearN(1 - t, 3, bottomAmp));
+  }
+
+  /* ── Left: bottom → top ── */
+  for (var i = STEPS; i >= 1; i--) {
+    var t = i / STEPS;
+    ctx.lineTo(tearN(1 - t, 4, leftAmp), t * H);
+  }
+
+  ctx.closePath();
+
+  /* Fill white = visible area */
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  /* Very slight edge softening — simulates paper-fiber fuzz */
+  ctx.globalCompositeOperation = 'destination-in';
+  var grad = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.3,W/2,H/2,Math.max(W,H)*0.72);
+  grad.addColorStop(0,   'rgba(0,0,0,1)');
+  grad.addColorStop(0.94,'rgba(0,0,0,1)');
+  grad.addColorStop(1,   'rgba(0,0,0,0.55)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'source-over';
+
+  var url = canvas.toDataURL();
+  folio.style.webkitMaskImage = 'url(' + url + ')';
+  folio.style.maskImage        = 'url(' + url + ')';
+  folio.style.webkitMaskSize   = '100% 100%';
+  folio.style.maskSize         = '100% 100%';
+}
+
+window.addEventListener('load', buildTornMask);
+
+var _rz;
+window.addEventListener('resize', function() {
+  clearTimeout(_rz);
+  _rz = setTimeout(buildTornMask, 280);
+});
+</script>
+
+</body>
+</html>
